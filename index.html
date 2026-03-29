@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Superior Services</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --red:#cc1b1b; --red-dark:#a01515; --red-light:#e52222;
+  --blue:#1a3a6b; --blue-mid:#1e4d9b; --blue-light:#2563c7;
+  --white:#fff; --off-white:#f0f4ff; --silver:#dde3f0;
+  --muted:#8896b3; --bg:#eef1f8; --surface:#fff;
+  --border:#c8d0e4; --green:#16a34a; --radius:13px;
+  --good:#16a34a; --caution:#d97706; --bad:#cc1b1b;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{background:var(--bg);color:var(--blue);font-family:'Open Sans',sans-serif;min-height:100vh;max-width:430px;margin:0 auto;padding-bottom:96px;}
+
+/* HEADER */
+.header{background:linear-gradient(160deg,var(--blue) 0%,#0e2550 100%);padding:48px 18px 0;position:sticky;top:0;z-index:100;box-shadow:0 3px 16px rgba(10,25,60,0.35);}
+.header-brand{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.logo-block{display:flex;flex-direction:column;}
+.logo-main{font-family:'Oswald',sans-serif;font-size:26px;font-weight:700;color:#fff;letter-spacing:0.5px;line-height:1;}
+.logo-main span{color:#ff6b6b;}
+.logo-sub{font-family:'Oswald',sans-serif;font-size:11px;color:rgba(255,255,255,0.5);letter-spacing:2px;text-transform:uppercase;margin-top:2px;}
+.logo-services{display:flex;gap:5px;margin-top:5px;}
+.svc-tag{font-size:9px;font-weight:600;padding:2px 6px;border-radius:4px;text-transform:uppercase;letter-spacing:0.5px;}
+.svc-hvac{background:rgba(204,27,27,0.3);color:#ffaaaa;border:1px solid rgba(204,27,27,0.5);}
+.svc-elec{background:rgba(255,200,0,0.15);color:#ffd966;border:1px solid rgba(255,200,0,0.3);}
+.svc-plumb{background:rgba(37,99,199,0.3);color:#90b8ff;border:1px solid rgba(37,99,199,0.5);}
+.date-badge{font-size:11px;color:rgba(255,255,255,0.6);background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);padding:5px 11px;border-radius:20px;white-space:nowrap;}
+.stripe{height:4px;background:linear-gradient(90deg,var(--red-dark),var(--red-light),var(--red-dark));}
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);background:var(--blue);border-top:1px solid rgba(255,255,255,0.08);}
+.stat{padding:10px 8px;text-align:center;border-right:1px solid rgba(255,255,255,0.1);}
+.stat:last-child{border-right:none;}
+.stat-num{font-family:'Oswald',sans-serif;font-size:26px;font-weight:700;line-height:1;}
+.stat-num.s-new{color:#ff9090;}.stat-num.s-prog{color:#ffd966;}.stat-num.s-done{color:#6ee7a0;}
+.stat-label{font-size:9px;color:rgba(255,255,255,0.45);margin-top:2px;text-transform:uppercase;letter-spacing:1px;}
+
+/* NAV TABS */
+.nav-tabs{display:flex;background:var(--blue);border-top:1px solid rgba(255,255,255,0.1);}
+.nav-tab{flex:1;padding:10px 4px;text-align:center;font-family:'Oswald',sans-serif;font-size:12px;font-weight:600;color:rgba(255,255,255,0.5);letter-spacing:0.5px;cursor:pointer;border-bottom:3px solid transparent;transition:all 0.2s;}
+.nav-tab.active{color:#fff;border-bottom-color:var(--red-light);}
+
+/* FILTERS */
+.filter-bar{padding:12px 16px 0;display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;background:var(--bg);}
+.filter-bar::-webkit-scrollbar{display:none;}
+.filter-tab{flex-shrink:0;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;border:1.5px solid var(--border);background:var(--white);color:var(--muted);cursor:pointer;transition:all 0.2s;}
+.filter-tab.active{background:var(--blue);border-color:var(--blue);color:white;}
+.section-title{padding:14px 16px 6px;font-family:'Oswald',sans-serif;font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+
+/* PAGES */
+.page{display:none;}.page.active{display:block;}
+
+/* JOB CARDS */
+.jobs-list{padding:0 16px;display:flex;flex-direction:column;gap:10px;}
+.job-card{background:var(--surface);border-radius:var(--radius);border:1.5px solid var(--border);padding:13px;transition:all 0.2s;position:relative;overflow:hidden;animation:slideIn 0.3s ease;box-shadow:0 2px 8px rgba(20,40,100,0.07);}
+@keyframes slideIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.job-card:active{transform:scale(0.985);}
+.job-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;}
+.job-card.new::before{background:var(--blue-light);}
+.job-card.in-progress::before{background:#d97706;}
+.job-card.done::before{background:var(--green);}
+.job-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:7px;}
+.job-name{font-family:'Oswald',sans-serif;font-size:18px;font-weight:600;color:var(--blue);line-height:1.1;flex:1;padding-right:8px;}
+.status-pill{font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;text-transform:uppercase;letter-spacing:0.5px;white-space:nowrap;flex-shrink:0;font-family:'Oswald',sans-serif;}
+.status-pill.new{background:rgba(37,99,199,0.1);color:var(--blue-light);border:1px solid rgba(37,99,199,0.2);}
+.status-pill.in-progress{background:rgba(217,119,6,0.1);color:#d97706;border:1px solid rgba(217,119,6,0.25);}
+.status-pill.done{background:rgba(22,163,74,0.1);color:var(--green);border:1px solid rgba(22,163,74,0.2);}
+.job-meta{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:9px;}
+.meta-tag{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:3px;}
+.type-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:5px;text-transform:uppercase;letter-spacing:0.5px;font-family:'Oswald',sans-serif;}
+.type-hvac{background:rgba(204,27,27,0.1);color:var(--red);border:1px solid rgba(204,27,27,0.2);}
+.type-electrical{background:rgba(180,83,9,0.1);color:#b45309;border:1px solid rgba(180,83,9,0.2);}
+.type-plumbing{background:rgba(37,99,199,0.1);color:var(--blue-light);border:1px solid rgba(37,99,199,0.2);}
+.type-construction{background:rgba(75,85,99,0.1);color:#4b5563;border:1px solid rgba(75,85,99,0.2);}
+.job-notes{font-size:12px;color:#64748b;line-height:1.4;margin-bottom:8px;padding:6px 8px;background:var(--off-white);border-radius:7px;border-left:3px solid var(--silver);}
+.photo-strip{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-bottom:8px;}
+.photo-strip::-webkit-scrollbar{display:none;}
+.photo-thumb{width:60px;height:60px;border-radius:8px;object-fit:cover;flex-shrink:0;border:2px solid var(--border);cursor:pointer;}
+.photo-count{font-size:11px;color:var(--muted);margin-bottom:4px;}
+.job-actions{display:flex;gap:7px;padding-top:9px;border-top:1px solid var(--border);}
+.action-btn{flex:1;padding:7px;border-radius:8px;border:1.5px solid var(--border);background:var(--off-white);color:var(--muted);font-size:12px;font-weight:600;cursor:pointer;text-align:center;transition:all 0.2s;}
+.action-btn:active{transform:scale(0.96);}
+.action-btn.advance{background:var(--blue);border-color:var(--blue);color:white;}
+.action-btn.edit-btn{background:rgba(37,99,199,0.08);border-color:rgba(37,99,199,0.25);color:var(--blue-light);}
+.action-btn.done-btn{background:rgba(22,163,74,0.08);border-color:rgba(22,163,74,0.25);color:var(--green);}
+.action-btn.delete{background:rgba(204,27,27,0.06);border-color:rgba(204,27,27,0.2);color:var(--red);flex:0;padding:7px 13px;}
+.action-btn.checklist-btn{background:rgba(204,27,27,0.08);border-color:rgba(204,27,27,0.25);color:var(--red);}
+
+/* EMPTY */
+.empty-state{text-align:center;padding:56px 20px;}
+.empty-icon{font-size:52px;margin-bottom:12px;}
+.empty-title{font-family:'Oswald',sans-serif;font-size:22px;font-weight:600;margin-bottom:6px;color:var(--blue);}
+.empty-sub{font-size:13px;line-height:1.6;color:var(--muted);}
+
+/* FAB */
+.fab{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);width:calc(100% - 32px);max-width:398px;background:linear-gradient(135deg,var(--red-light),var(--red-dark));color:white;border:none;border-radius:14px;padding:16px;font-family:'Oswald',sans-serif;font-size:18px;font-weight:700;letter-spacing:1.5px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 20px rgba(204,27,27,0.45);transition:all 0.2s;z-index:200;}
+.fab:active{transform:translateX(-50%) scale(0.97);}
+
+/* OVERLAY / MODAL */
+.overlay{position:fixed;inset:0;background:rgba(10,25,60,0.65);backdrop-filter:blur(5px);z-index:300;display:none;align-items:flex-end;justify-content:center;}
+.overlay.open{display:flex;}
+.modal{background:var(--white);border-radius:22px 22px 0 0;width:100%;max-width:430px;animation:slideUp 0.3s ease;overflow:hidden;max-height:92vh;display:flex;flex-direction:column;}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-header{background:linear-gradient(135deg,var(--blue) 0%,#0e2550 100%);padding:16px 20px 18px;flex-shrink:0;}
+.modal-handle{width:36px;height:4px;background:rgba(255,255,255,0.25);border-radius:2px;margin:0 auto 14px;}
+.modal-stripe{height:3px;background:linear-gradient(90deg,var(--red-dark),var(--red-light),var(--red-dark));flex-shrink:0;}
+.modal-title{font-family:'Oswald',sans-serif;font-size:22px;font-weight:700;color:white;}
+.modal-sub{font-size:11px;color:rgba(255,255,255,0.5);margin-top:2px;}
+.modal-body{padding:18px 20px 0;overflow-y:auto;flex:1;}
+.form-group{margin-bottom:13px;}
+.form-label{display:block;font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;font-family:'Oswald',sans-serif;}
+.form-input,.form-select{width:100%;background:var(--off-white);border:1.5px solid var(--border);border-radius:10px;padding:11px 13px;color:var(--blue);font-family:'Open Sans',sans-serif;font-size:15px;outline:none;transition:border-color 0.2s;-webkit-appearance:none;appearance:none;}
+.form-input:focus,.form-select:focus{border-color:var(--blue-light);background:white;}
+.form-input::placeholder{color:var(--muted);}
+.type-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+.type-option{padding:10px 8px;border-radius:10px;border:1.5px solid var(--border);background:var(--off-white);color:var(--muted);font-size:13px;font-weight:600;cursor:pointer;text-align:center;transition:all 0.2s;}
+.type-option.selected{border-color:var(--blue);color:var(--blue);background:rgba(26,58,107,0.08);}
+.photo-upload-area{border:2px dashed var(--border);border-radius:12px;padding:18px;text-align:center;cursor:pointer;background:var(--off-white);}
+.photo-upload-icon{font-size:30px;margin-bottom:4px;}
+.photo-upload-text{font-size:13px;color:var(--muted);font-weight:600;}
+.photo-upload-sub{font-size:11px;color:var(--muted);margin-top:2px;}
+#photoFileInput{display:none;}
+.modal-photos-preview{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+.modal-photo-wrap{position:relative;width:72px;height:72px;}
+.modal-photo-img{width:72px;height:72px;border-radius:8px;object-fit:cover;border:2px solid var(--border);}
+.modal-photo-del{position:absolute;top:-6px;right:-6px;background:var(--red);color:white;border:none;border-radius:50%;width:20px;height:20px;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.notes-input{resize:none;height:68px;line-height:1.4;}
+.modal-actions{display:flex;gap:10px;padding:14px 20px;flex-shrink:0;}
+.btn-cancel{flex:1;padding:14px;border-radius:12px;border:1.5px solid var(--border);background:var(--off-white);color:var(--muted);font-size:15px;font-weight:600;cursor:pointer;}
+.btn-save{flex:2;padding:14px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--red-light),var(--red-dark));color:white;font-family:'Oswald',sans-serif;font-size:18px;font-weight:700;letter-spacing:1px;cursor:pointer;box-shadow:0 3px 12px rgba(204,27,27,0.3);transition:all 0.2s;}
+.btn-save:active{transform:scale(0.97);}
+
+/* ── CHECKLIST OVERLAY ── */
+.cl-overlay{position:fixed;inset:0;background:var(--bg);z-index:400;display:none;flex-direction:column;overflow:hidden;}
+.cl-overlay.open{display:flex;}
+.cl-header{background:linear-gradient(135deg,var(--blue),#0e2550);padding:48px 16px 0;flex-shrink:0;}
+.cl-header-top{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.cl-back{background:rgba(255,255,255,0.15);border:none;color:white;width:36px;height:36px;border-radius:50%;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.cl-title{font-family:'Oswald',sans-serif;font-size:20px;font-weight:700;color:white;flex:1;}
+.cl-share-btn{background:rgba(255,255,255,0.15);border:none;color:white;padding:7px 12px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Oswald',sans-serif;}
+.cl-stripe{height:3px;background:linear-gradient(90deg,var(--red-dark),var(--red-light),var(--red-dark));}
+.cl-info{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:10px 16px;background:rgba(255,255,255,0.05);}
+.cl-info-item{font-size:11px;color:rgba(255,255,255,0.6);}
+.cl-info-item span{color:white;font-weight:600;}
+.cl-body{flex:1;overflow-y:auto;padding:12px 16px 20px;}
+
+/* LEGEND */
+.cl-legend{display:flex;gap:8px;margin-bottom:14px;padding:10px 12px;background:var(--surface);border-radius:10px;border:1px solid var(--border);}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:var(--blue);}
+.legend-dot{width:14px;height:14px;border-radius:50%;flex-shrink:0;}
+.legend-dot.good{background:var(--good);}
+.legend-dot.caution{background:var(--caution);}
+.legend-dot.bad{background:var(--bad);}
+
+/* CHECKLIST SECTION */
+.cl-section{background:var(--surface);border-radius:var(--radius);border:1.5px solid var(--border);margin-bottom:12px;overflow:hidden;box-shadow:0 2px 6px rgba(20,40,100,0.06);}
+.cl-section-header{background:var(--blue);padding:10px 14px;font-family:'Oswald',sans-serif;font-size:14px;font-weight:600;color:white;letter-spacing:0.5px;}
+.cl-item{display:flex;align-items:center;padding:11px 14px;border-bottom:1px solid var(--border);gap:10px;}
+.cl-item:last-child{border-bottom:none;}
+.cl-item-name{flex:1;font-size:13px;color:var(--blue);font-weight:600;line-height:1.2;}
+.cl-btns{display:flex;gap:6px;flex-shrink:0;}
+
+/* BIG COLORED BUTTONS - easy to tap in the field */
+.cl-btn{
+  width:52px;height:44px;border-radius:10px;border:2px solid var(--border);
+  background:var(--off-white);cursor:pointer;font-size:11px;font-weight:800;
+  color:var(--muted);transition:all 0.15s;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:1px;letter-spacing:0.3px;
+  text-transform:uppercase;line-height:1;
+}
+.cl-btn:active{transform:scale(0.92);}
+.cl-btn .btn-icon{font-size:15px;line-height:1;}
+.cl-btn .btn-lbl{font-size:8px;font-weight:700;letter-spacing:0.5px;}
+
+/* UNSELECTED TINTED */
+.cl-btn.good-idle{border-color:rgba(22,163,74,0.3);background:rgba(22,163,74,0.06);color:rgba(22,163,74,0.5);}
+.cl-btn.caution-idle{border-color:rgba(217,119,6,0.3);background:rgba(217,119,6,0.06);color:rgba(217,119,6,0.5);}
+.cl-btn.bad-idle{border-color:rgba(204,27,27,0.3);background:rgba(204,27,27,0.06);color:rgba(204,27,27,0.5);}
+.cl-btn.na-idle{border-color:rgba(37,99,199,0.3);background:rgba(37,99,199,0.06);color:rgba(37,99,199,0.5);}
+
+/* SELECTED - full color */
+.cl-btn.sel-good{background:#16a34a;border-color:#16a34a;color:white;box-shadow:0 3px 10px rgba(22,163,74,0.4);}
+.cl-btn.sel-caution{background:#d97706;border-color:#d97706;color:white;box-shadow:0 3px 10px rgba(217,119,6,0.4);}
+.cl-btn.sel-bad{background:#cc1b1b;border-color:#cc1b1b;color:white;box-shadow:0 3px 10px rgba(204,27,27,0.4);}
+.cl-btn.sel-na{background:#2563c7;border-color:#2563c7;color:white;box-shadow:0 3px 10px rgba(37,99,199,0.4);}
+
+/* CHECKLIST EXTRAS */
+.cl-extras{background:var(--surface);border-radius:var(--radius);border:1.5px solid var(--border);padding:14px;margin-bottom:12px;}
+.cl-extras-title{font-family:'Oswald',sans-serif;font-size:14px;font-weight:600;color:var(--blue);margin-bottom:12px;letter-spacing:0.5px;}
+.cl-row{display:flex;gap:10px;margin-bottom:10px;}
+.cl-field{flex:1;}
+.cl-field label{display:block;font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px;}
+.cl-input{width:100%;background:var(--off-white);border:1.5px solid var(--border);border-radius:8px;padding:9px 11px;color:var(--blue);font-family:'Open Sans',sans-serif;font-size:14px;outline:none;}
+.cl-input:focus{border-color:var(--blue-light);}
+.cl-toggle-row{display:flex;gap:8px;}
+.cl-toggle{flex:1;padding:9px 6px;border-radius:8px;border:1.5px solid var(--border);background:var(--off-white);color:var(--muted);font-size:12px;font-weight:600;cursor:pointer;text-align:center;transition:all 0.2s;}
+.cl-toggle.sel{background:var(--blue);border-color:var(--blue);color:white;}
+.cl-textarea{width:100%;background:var(--off-white);border:1.5px solid var(--border);border-radius:8px;padding:9px 11px;color:var(--blue);font-family:'Open Sans',sans-serif;font-size:14px;outline:none;resize:none;height:80px;line-height:1.4;}
+.cl-textarea:focus{border-color:var(--blue-light);}
+
+/* CL PHOTOS */
+.cl-photo-upload{border:2px dashed var(--border);border-radius:10px;padding:16px;text-align:center;cursor:pointer;background:var(--off-white);margin-bottom:10px;}
+.cl-photos-preview{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;}
+.cl-photo-wrap{position:relative;width:80px;height:80px;}
+.cl-photo-img{width:80px;height:80px;border-radius:8px;object-fit:cover;border:2px solid var(--border);cursor:pointer;}
+.cl-photo-del{position:absolute;top:-6px;right:-6px;background:var(--red);color:white;border:none;border-radius:50%;width:20px;height:20px;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+
+/* CL SUMMARY BADGE */
+.cl-summary{display:flex;gap:6px;padding:8px 12px;background:var(--off-white);border-radius:8px;border:1px solid var(--border);margin-bottom:10px;}
+.cl-sum-item{flex:1;text-align:center;}
+.cl-sum-num{font-family:'Oswald',sans-serif;font-size:18px;font-weight:700;}
+.cl-sum-num.g{color:var(--good);}.cl-sum-num.c{color:var(--caution);}.cl-sum-num.b{color:var(--bad);}
+.cl-sum-lbl{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;}
+
+.cl-save-btn{width:100%;padding:16px;border-radius:14px;border:none;background:linear-gradient(135deg,var(--red-light),var(--red-dark));color:white;font-family:'Oswald',sans-serif;font-size:18px;font-weight:700;letter-spacing:1px;cursor:pointer;box-shadow:0 4px 16px rgba(204,27,27,0.35);margin-top:4px;}
+
+/* LIGHTBOX */
+.lightbox{position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:600;display:none;align-items:center;justify-content:center;flex-direction:column;}
+.lightbox.open{display:flex;}
+.lightbox img{max-width:95vw;max-height:80vh;border-radius:10px;object-fit:contain;}
+.lightbox-close{position:absolute;top:20px;right:20px;background:rgba(255,255,255,0.15);border:none;color:white;font-size:24px;width:44px;height:44px;border-radius:50%;cursor:pointer;}
+.lightbox-nav{display:flex;gap:16px;margin-top:16px;}
+.lightbox-btn{background:rgba(255,255,255,0.15);border:none;color:white;font-size:20px;width:44px;height:44px;border-radius:50%;cursor:pointer;}
+.lightbox-counter{color:rgba(255,255,255,0.6);font-size:13px;margin-top:8px;}
+
+/* SHARE MODAL */
+.share-overlay{position:fixed;inset:0;background:rgba(10,25,60,0.7);z-index:700;display:none;align-items:flex-end;justify-content:center;}
+.share-overlay.open{display:flex;}
+.share-modal{background:white;border-radius:22px 22px 0 0;width:100%;max-width:430px;padding:24px 20px 40px;animation:slideUp 0.3s ease;}
+.share-title{font-family:'Oswald',sans-serif;font-size:20px;font-weight:700;color:var(--blue);margin-bottom:4px;}
+.share-sub{font-size:12px;color:var(--muted);margin-bottom:16px;}
+.share-text{background:var(--off-white);border:1.5px solid var(--border);border-radius:10px;padding:12px;font-size:12px;color:var(--blue);line-height:1.6;white-space:pre-wrap;max-height:260px;overflow-y:auto;margin-bottom:14px;}
+.share-btns{display:flex;gap:10px;}
+.share-copy-btn{flex:1;padding:14px;border-radius:12px;border:none;background:var(--blue);color:white;font-family:'Oswald',sans-serif;font-size:16px;font-weight:700;cursor:pointer;}
+.share-close-btn{flex:0;padding:14px 18px;border-radius:12px;border:1.5px solid var(--border);background:var(--off-white);color:var(--muted);font-size:15px;font-weight:600;cursor:pointer;}
+
+.phone-footer{text-align:center;padding:10px 0 4px;font-family:'Oswald',sans-serif;font-size:13px;color:var(--muted);}
+.phone-footer span{color:var(--red);font-weight:600;}
+
+
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-brand">
+    <div class="logo-block">
+      <div class="logo-main">Superior <span>Services</span></div>
+      <div class="logo-sub">Heating &amp; Cooling</div>
+      <div class="logo-services">
+        <span class="svc-tag svc-hvac">A/C</span>
+        <span class="svc-tag svc-elec">Electric</span>
+        <span class="svc-tag svc-plumb">Plumbing</span>
+      </div>
+    </div>
+    <div class="date-badge" id="dateLabel"></div>
+  </div>
+  <div class="stripe"></div>
+  <div class="stats-row">
+    <div class="stat"><div class="stat-num s-new" id="statNew">0</div><div class="stat-label">New</div></div>
+    <div class="stat"><div class="stat-num s-prog" id="statProgress">0</div><div class="stat-label">In Progress</div></div>
+    <div class="stat"><div class="stat-num s-done" id="statDone">0</div><div class="stat-label">Done</div></div>
+  </div>
+  <div class="nav-tabs">
+    <div class="nav-tab active" data-page="jobs">📋 JOBS</div>
+    <div class="nav-tab" data-page="hvac">🌡️ HVAC CHECK</div>
+  </div>
+</div>
+
+<!-- PAGE: JOBS -->
+<div class="page active" id="page-jobs">
+  <div class="filter-bar">
+    <button class="filter-tab active" data-filter="all">All Jobs</button>
+    <button class="filter-tab" data-filter="new">New</button>
+    <button class="filter-tab" data-filter="in-progress">In Progress</button>
+    <button class="filter-tab" data-filter="done">Done</button>
+  </div>
+  <div class="section-title" id="sectionLabel">ALL JOBS</div>
+  <div class="jobs-list" id="jobsList"></div>
+  <div class="phone-footer">Superior Services &nbsp;·&nbsp; <span>(985) 781-0418</span></div>
+</div>
+
+<!-- PAGE: HVAC LIST -->
+<div class="page" id="page-hvac">
+  <div class="section-title">HVAC MAINTENANCE REPORTS</div>
+  <div class="jobs-list" id="hvacList"></div>
+  <div style="height:10px;"></div>
+</div>
+
+<!-- FAB -->
+<button class="fab" id="fabBtn">＋ &nbsp;<span id="fabLabel">ADD NEW JOB</span></button>
+
+<!-- JOB MODAL -->
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-handle"></div>
+      <div class="modal-title" id="modalTitle">New Job</div>
+      <div class="modal-sub">Superior Services · Job Tracker</div>
+    </div>
+    <div class="modal-stripe"></div>
+    <div class="modal-body">
+      <div class="form-group"><label class="form-label">Customer Name *</label><input class="form-input" id="inputName" placeholder="e.g. John Smith" type="text"></div>
+      <div class="form-group"><label class="form-label">Address</label><input class="form-input" id="inputAddress" placeholder="e.g. 123 Main St" type="text"></div>
+      <div class="form-group"><label class="form-label">Phone</label><input class="form-input" id="inputPhone" placeholder="e.g. (985) 555-1234" type="tel"></div>
+      <div class="form-group">
+        <label class="form-label">Trade *</label>
+        <div class="type-grid">
+          <div class="type-option" data-type="HVAC">🌡️ HVAC / A/C</div>
+          <div class="type-option" data-type="Electrical">⚡ Electrical</div>
+          <div class="type-option" data-type="Plumbing">🔧 Plumbing</div>
+          <div class="type-option" data-type="Construction">🏗️ Construction</div>
+        </div>
+      </div>
+      <div class="form-group"><label class="form-label">Work Type</label>
+        <select class="form-select" id="inputCategory">
+          <option value="Service Call">Service Call</option>
+          <option value="New Installation">New Installation</option>
+          <option value="Estimate / Quote">Estimate / Quote</option>
+          <option value="Repair">Repair</option>
+          <option value="Maintenance">Maintenance</option>
+        </select>
+      </div>
+      <div class="form-group"><label class="form-label">Status</label>
+        <select class="form-select" id="inputStatus">
+          <option value="new">New</option>
+          <option value="in-progress">In Progress</option>
+          <option value="done">Done</option>
+        </select>
+      </div>
+      <div class="form-group"><label class="form-label">Notes</label><textarea class="form-input notes-input" id="inputNotes" placeholder="Any details..."></textarea></div>
+      <div class="form-group">
+        <label class="form-label">Photos</label>
+        <div class="photo-upload-area" id="photoUploadArea"><div class="photo-upload-icon">📷</div><div class="photo-upload-text">Tap to add photos</div><div class="photo-upload-sub">Take a photo or choose from library</div></div>
+        <input type="file" id="photoFileInput" accept="image/*" multiple>
+        <div class="modal-photos-preview" id="modalPhotosPreview"></div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" id="cancelBtn">Cancel</button>
+      <button class="btn-save" id="saveBtn">SAVE JOB</button>
+    </div>
+  </div>
+</div>
+
+<!-- CHECKLIST FULL SCREEN -->
+<div class="cl-overlay" id="clOverlay">
+  <div class="cl-header">
+    <div class="cl-header-top">
+      <button class="cl-back" id="clBack">‹</button>
+      <div class="cl-title" id="clTitle">HVAC Maintenance</div>
+      <button class="cl-share-btn" id="clShareBtn">Share 📤</button>
+    </div>
+    <div class="cl-info">
+      <div class="cl-info-item">Customer: <span id="clCustomer">—</span></div>
+      <div class="cl-info-item">Date: <span id="clDate">—</span></div>
+      <div class="cl-info-item">Address: <span id="clAddr">—</span></div>
+      <div class="cl-info-item">Tech: <span id="clTech">—</span></div>
+    </div>
+  </div>
+  <div class="cl-stripe"></div>
+  <div class="cl-body" id="clBody"></div>
+</div>
+
+<!-- SHARE MODAL -->
+<div class="share-overlay" id="shareOverlay">
+  <div class="share-modal">
+    <div class="modal-handle" style="background:#dde3f0;margin:0 auto 16px;"></div>
+    <div class="share-title">Share Report</div>
+    <div class="share-sub">Copy and paste into a text, email, or anywhere</div>
+    <div class="share-text" id="shareText"></div>
+    <div class="share-btns">
+      <button class="share-close-btn" id="shareCloseBtn">Close</button>
+      <button class="share-copy-btn" id="shareCopyBtn">📋 Copy Report</button>
+    </div>
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lightboxClose">✕</button>
+  <img id="lightboxImg" src="" alt="">
+  <div class="lightbox-nav">
+    <button class="lightbox-btn" id="lightboxPrev">‹</button>
+    <button class="lightbox-btn" id="lightboxNext">›</button>
+  </div>
+  <div class="lightbox-counter" id="lightboxCounter"></div>
+</div>
+
+<script>
+// ── DATA ──
+let jobs       = JSON.parse(localStorage.getItem('superior_jobs')  || '[]');
+let hvacReports= JSON.parse(localStorage.getItem('superior_hvac')  || '[]');
+let activeFilter='all', activePage='jobs';
+let selectedType='', editingJobId=null, pendingPhotos=[];
+let lightboxPhotos=[], lightboxIndex=0;
+let currentReportId=null;
+
+// checklist items
+const CL_SECTIONS = [
+  { title:'Unit Type', items:['Multi units','Single units','Complete system','Inside unit','Outside unit'] },
+  { title:'Capacitors', items:['5 uf capacitors','7.7 cap','10 uf cap','30 + 5 cap','35 + 5 cap','45 + 5 cap','40 + 5 cap','50 + 5 cap','55 + 5 cap','80 + 5 cap','Hard start cap'] },
+  { title:'Electrical / Fuses', items:['30 amp fuses','60 amp fuses','Transformers','24v contactors'] },
+  { title:'Refrigerant', items:['R-22','410A','Leak check','Leak sealant/dye'] },
+  { title:'Thermostats', items:['Straight cool t stats','Heat pump t stats'] },
+  { title:'Switches / Float', items:['Pan float switch','Inline float switch'] },
+  { title:'Coil / Drain', items:['Pull evap and clean','Clean evap in place','Drain pan'] },
+  { title:'Ductwork / Other', items:['Strap up ducts','Motor','Seal air leaks','Toilet flapper','Flow valve'] }
+];
+
+function saveJobs()   {
+  try { localStorage.setItem('superior_jobs', JSON.stringify(jobs)); }
+  catch(e) { alert('Storage full — try removing some photos from jobs and try again.'); }
+}
+function saveHvac()   {
+  try { localStorage.setItem('superior_hvac', JSON.stringify(hvacReports)); }
+  catch(e) { alert('Storage full — try removing some photos from reports and try again.'); }
+}
+
+document.getElementById('dateLabel').textContent =
+  new Date().toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+
+// ── PAGE NAV ──
+document.querySelectorAll('.nav-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+    tab.classList.add('active');
+    activePage = tab.dataset.page;
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    document.getElementById('page-'+activePage).classList.add('active');
+    document.getElementById('fabLabel').textContent = activePage==='jobs' ? 'ADD NEW JOB' : 'NEW HVAC REPORT';
+    if(activePage==='hvac') renderHvacList();
+  });
+});
+
+// ── RENDER JOBS ──
+const typeClass={HVAC:'type-hvac',Electrical:'type-electrical',Plumbing:'type-plumbing',Construction:'type-construction'};
+const sLabel={new:'New','in-progress':'In Progress',done:'Done'};
+const sNext={new:'in-progress','in-progress':'done',done:null};
+const sBtn={new:'▶ Start','in-progress':'✓ Done'};
+
+function renderJobs() {
+  const filtered = activeFilter==='all' ? jobs : jobs.filter(j=>j.status===activeFilter);
+  document.getElementById('statNew').textContent      = jobs.filter(j=>j.status==='new').length;
+  document.getElementById('statProgress').textContent = jobs.filter(j=>j.status==='in-progress').length;
+  document.getElementById('statDone').textContent     = jobs.filter(j=>j.status==='done').length;
+  const labels={all:'ALL JOBS',new:'NEW JOBS','in-progress':'IN PROGRESS',done:'COMPLETED'};
+  document.getElementById('sectionLabel').textContent=`${labels[activeFilter]} (${filtered.length})`;
+  const list=document.getElementById('jobsList');
+  if(!filtered.length){list.innerHTML=`<div class="empty-state"><div class="empty-icon">🔧</div><div class="empty-title">No jobs yet</div><div class="empty-sub">Tap Add New Job below.</div></div>`;return;}
+  list.innerHTML=filtered.slice().reverse().map(job=>{
+    const photos=job.photos||[];
+    const photoHTML=photos.length?`<div class="photo-count">📷 ${photos.length} photo${photos.length>1?'s':''}</div><div class="photo-strip">${photos.map((p,i)=>`<img class="photo-thumb" src="${p}" onclick="openLightbox('job','${job.id}',${i})">`).join('')}</div>`:'';
+    const nxt=sNext[job.status];
+    return `<div class="job-card ${job.status}">
+      <div class="job-top"><div class="job-name">${job.name}</div><div class="status-pill ${job.status}">${sLabel[job.status]}</div></div>
+      <div class="job-meta">
+        <span class="type-badge ${typeClass[job.type]||'type-hvac'}">${job.type}</span>
+        <span class="meta-tag">📋 ${job.category}</span>
+        ${job.address?`<span class="meta-tag">📍 ${job.address}</span>`:''}
+        ${job.phone?`<span class="meta-tag">📞 ${job.phone}</span>`:''}
+      </div>
+      ${job.notes?`<div class="job-notes">${job.notes}</div>`:''}
+      ${photoHTML}
+      <div class="job-actions">
+        <button class="action-btn edit-btn" onclick="openEditJob('${job.id}')">✏️ Edit</button>
+        ${nxt?`<button class="action-btn advance" onclick="advanceJob('${job.id}')">${sBtn[job.status]}</button>`:`<div class="action-btn done-btn">✓ Done</div>`}
+        <button class="action-btn delete" onclick="deleteJob('${job.id}')">🗑</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function advanceJob(id){const j=jobs.find(j=>j.id===id);if(j&&sNext[j.status]){j.status=sNext[j.status];saveJobs();renderJobs();}}
+function deleteJob(id){if(confirm('Delete this job?')){jobs=jobs.filter(j=>j.id!==id);saveJobs();renderJobs();}}
+
+document.querySelectorAll('.filter-tab').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.filter-tab').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');activeFilter=btn.dataset.filter;renderJobs();
+  });
+});
+
+// ── RENDER HVAC LIST ──
+function renderHvacList(){
+  const list=document.getElementById('hvacList');
+  if(!hvacReports.length){list.innerHTML=`<div class="empty-state"><div class="empty-icon">🌡️</div><div class="empty-title">No reports yet</div><div class="empty-sub">Tap New HVAC Report below.</div></div>`;return;}
+  list.innerHTML=hvacReports.slice().reverse().map(r=>{
+    const good=Object.values(r.checks||{}).filter(v=>v==='good').length;
+    const caution=Object.values(r.checks||{}).filter(v=>v==='caution').length;
+    const bad=Object.values(r.checks||{}).filter(v=>v==='bad').length;
+    const photos=(r.photos||[]).length;
+    return `<div class="job-card new" style="cursor:pointer;" onclick="openReport('${r.id}')">
+      <div class="job-top">
+        <div class="job-name">${r.customer||'Unnamed'}</div>
+        <div class="status-pill new">${r.date||'—'}</div>
+      </div>
+      <div class="job-meta">
+        <span class="meta-tag">📍 ${r.address||'No address'}</span>
+        ${r.unit?`<span class="meta-tag">🔢 Unit #${r.unit}</span>`:''}
+        ${r.tonnage?`<span class="meta-tag">⚖️ ${r.tonnage} ton</span>`:''}
+      </div>
+      <div class="cl-summary" style="margin-bottom:8px;">
+        <div class="cl-sum-item"><div class="cl-sum-num g">${good}</div><div class="cl-sum-lbl">Good</div></div>
+        <div class="cl-sum-item"><div class="cl-sum-num c">${caution}</div><div class="cl-sum-lbl">Caution</div></div>
+        <div class="cl-sum-item"><div class="cl-sum-num b">${bad}</div><div class="cl-sum-lbl">Bad</div></div>
+        ${photos?`<div class="cl-sum-item"><div class="cl-sum-num" style="color:var(--blue-light);">${photos}</div><div class="cl-sum-lbl">Photos</div></div>`:''}
+      </div>
+      <div class="job-actions">
+        <button class="action-btn edit-btn" onclick="event.stopPropagation();openReport('${r.id}')">✏️ Open / Edit</button>
+        <button class="action-btn delete" onclick="event.stopPropagation();deleteReport('${r.id}')">🗑</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function deleteReport(id){if(confirm('Delete this report?')){hvacReports=hvacReports.filter(r=>r.id!==id);saveHvac();renderHvacList();}}
+
+// ── FAB ──
+document.getElementById('fabBtn').addEventListener('click',()=>{
+  if(activePage==='jobs') openNewJob();
+  else openNewReport();
+});
+
+// ── JOB MODAL ──
+const overlay=document.getElementById('overlay');
+function openNewJob(){
+  editingJobId=null;selectedType='';pendingPhotos=[];
+  document.getElementById('modalTitle').textContent='New Job';
+  ['inputName','inputAddress','inputPhone','inputNotes'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('inputStatus').value='new';
+  document.getElementById('inputCategory').value='Service Call';
+  document.querySelectorAll('.type-option').forEach(o=>o.classList.remove('selected'));
+  renderModalPhotos();overlay.classList.add('open');
+  setTimeout(()=>document.getElementById('inputName').focus(),350);
+}
+function openEditJob(id){
+  const job=jobs.find(j=>j.id===id);if(!job)return;
+  editingJobId=id;selectedType=job.type;pendingPhotos=job.photos?[...job.photos]:[];
+  document.getElementById('modalTitle').textContent='Edit Job';
+  document.getElementById('inputName').value=job.name;
+  document.getElementById('inputAddress').value=job.address||'';
+  document.getElementById('inputPhone').value=job.phone||'';
+  document.getElementById('inputNotes').value=job.notes||'';
+  document.getElementById('inputStatus').value=job.status;
+  document.getElementById('inputCategory').value=job.category;
+  document.querySelectorAll('.type-option').forEach(o=>o.classList.toggle('selected',o.dataset.type===job.type));
+  renderModalPhotos();overlay.classList.add('open');
+}
+document.getElementById('cancelBtn').addEventListener('click',()=>overlay.classList.remove('open'));
+overlay.addEventListener('click',e=>{if(e.target===overlay)overlay.classList.remove('open');});
+document.querySelectorAll('.type-option').forEach(opt=>{
+  opt.addEventListener('click',()=>{document.querySelectorAll('.type-option').forEach(o=>o.classList.remove('selected'));opt.classList.add('selected');selectedType=opt.dataset.type;});
+});
+// ── PHOTO COMPRESSION ──
+function compressPhoto(file, callback) {
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      const MAX = 800; // max width or height in px
+      let w = img.width, h = img.height;
+      if (w > h) { if (w > MAX) { h = h * MAX / w; w = MAX; } }
+      else        { if (h > MAX) { w = w * MAX / h; h = MAX; } }
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      callback(canvas.toDataURL('image/jpeg', 0.6)); // 60% quality JPEG
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+document.getElementById('photoUploadArea').addEventListener('click',()=>document.getElementById('photoFileInput').click());
+document.getElementById('photoFileInput').addEventListener('change',function(){
+  Array.from(this.files).forEach(f=>{
+    compressPhoto(f, compressed => { pendingPhotos.push(compressed); renderModalPhotos(); });
+  });
+  this.value='';
+});
+function renderModalPhotos(){
+  const p=document.getElementById('modalPhotosPreview');
+  p.innerHTML=pendingPhotos.map((ph,i)=>`<div class="modal-photo-wrap"><img class="modal-photo-img" src="${ph}"><button class="modal-photo-del" onclick="removeModalPhoto(${i})">✕</button></div>`).join('');
+}
+function removeModalPhoto(i){pendingPhotos.splice(i,1);renderModalPhotos();}
+document.getElementById('saveBtn').addEventListener('click',()=>{
+  const name=document.getElementById('inputName').value.trim();
+  if(!name){alert('Please enter a customer name.');return;}
+  if(!selectedType){alert('Please select a trade type.');return;}
+  const data={name,address:document.getElementById('inputAddress').value.trim(),phone:document.getElementById('inputPhone').value.trim(),type:selectedType,category:document.getElementById('inputCategory').value,status:document.getElementById('inputStatus').value,notes:document.getElementById('inputNotes').value.trim(),photos:[...pendingPhotos]};
+  if(editingJobId){const j=jobs.find(j=>j.id===editingJobId);if(j)Object.assign(j,data);}
+  else{jobs.push({id:Date.now().toString(),...data,createdAt:new Date().toISOString()});}
+  saveJobs();overlay.classList.remove('open');
+  activeFilter='all';document.querySelectorAll('.filter-tab').forEach(b=>b.classList.remove('active'));
+  document.querySelector('[data-filter="all"]').classList.add('active');renderJobs();
+});
+
+// ── HVAC CHECKLIST ──
+let clReport = {};
+
+function openNewReport(){
+  clReport={id:Date.now().toString(),customer:'',address:'',unit:'',tech:'',date:new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}),tonnage:'',fuel:'',filter:'',notes:'',checks:{},photos:[]};
+  currentReportId=null;
+  renderChecklist();
+  document.getElementById('clOverlay').classList.add('open');
+}
+function openReport(id){
+  const r=hvacReports.find(r=>r.id===id);if(!r)return;
+  clReport=JSON.parse(JSON.stringify(r));
+  currentReportId=id;
+  renderChecklist();
+  document.getElementById('clOverlay').classList.add('open');
+}
+document.getElementById('clBack').addEventListener('click',()=>{
+  document.getElementById('clOverlay').classList.remove('open');
+  renderHvacList();
+});
+
+function renderChecklist(){
+  document.getElementById('clTitle').textContent='HVAC Maintenance';
+  document.getElementById('clCustomer').textContent=clReport.customer||'—';
+  document.getElementById('clDate').textContent=clReport.date||'—';
+  document.getElementById('clAddr').textContent=clReport.address||'—';
+  document.getElementById('clTech').textContent=clReport.tech||'—';
+
+  const good=Object.values(clReport.checks||{}).filter(v=>v==='good').length;
+  const caution=Object.values(clReport.checks||{}).filter(v=>v==='caution').length;
+  const bad=Object.values(clReport.checks||{}).filter(v=>v==='bad').length;
+
+  let html=`
+  <div class="cl-legend">
+    <div class="legend-item"><div class="legend-dot good"></div>Good</div>
+    <div class="legend-item"><div class="legend-dot caution"></div>Caution</div>
+    <div class="legend-item"><div class="legend-dot bad"></div>Bad</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#2563c7;"></div>N/A</div>
+  </div>
+  <div class="cl-summary">
+    <div class="cl-sum-item"><div class="cl-sum-num g">${good}</div><div class="cl-sum-lbl">Good</div></div>
+    <div class="cl-sum-item"><div class="cl-sum-num c">${caution}</div><div class="cl-sum-lbl">Caution</div></div>
+    <div class="cl-sum-item"><div class="cl-sum-num b">${bad}</div><div class="cl-sum-lbl">Issues</div></div>
+  </div>
+
+  <!-- JOB INFO -->
+  <div class="cl-extras">
+    <div class="cl-extras-title">Job Info</div>
+    <div class="cl-row">
+      <div class="cl-field"><label>Customer Name</label><input class="cl-input" id="cl_customer" value="${clReport.customer||''}" placeholder="John Smith" oninput="clReport.customer=this.value;updateClHeader();"></div>
+    </div>
+    <div class="cl-row">
+      <div class="cl-field"><label>Address</label><input class="cl-input" id="cl_address" value="${clReport.address||''}" placeholder="123 Main St" oninput="clReport.address=this.value;updateClHeader();"></div>
+      <div class="cl-field" style="max-width:90px;"><label>Unit #</label><input class="cl-input" id="cl_unit" value="${clReport.unit||''}" placeholder="A1" oninput="clReport.unit=this.value;"></div>
+    </div>
+    <div class="cl-row">
+      <div class="cl-field"><label>Technician</label><input class="cl-input" id="cl_tech" value="${clReport.tech||''}" placeholder="Tech name" oninput="clReport.tech=this.value;updateClHeader();"></div>
+      <div class="cl-field" style="max-width:100px;"><label>Tonnage</label><input class="cl-input" id="cl_tonnage" value="${clReport.tonnage||''}" placeholder="3.5" oninput="clReport.tonnage=this.value;"></div>
+    </div>
+    <div class="cl-row">
+      <div class="cl-field"><label>Fuel Type</label>
+        <div class="cl-toggle-row">
+          <div class="cl-toggle ${clReport.fuel==='Gas'?'sel':''}" onclick="setFuel('Gas')">Gas</div>
+          <div class="cl-toggle ${clReport.fuel==='Electric'?'sel':''}" onclick="setFuel('Electric')">Electric</div>
+        </div>
+      </div>
+      <div class="cl-field"><label>Filter</label>
+        <div class="cl-toggle-row">
+          <div class="cl-toggle ${clReport.filter==='Clean'?'sel':''}" onclick="setFilter('Clean')">Clean</div>
+          <div class="cl-toggle ${clReport.filter==='Dirty'?'sel':''}" onclick="setFilter('Dirty')">Dirty</div>
+        </div>
+      </div>
+    </div>
+  </div>`;
+
+  // checklist sections
+  CL_SECTIONS.forEach(sec=>{
+    html+=`<div class="cl-section"><div class="cl-section-header">${sec.title}</div>`;
+    sec.items.forEach(item=>{
+      const key=item.replace(/\s+/g,'_');
+      const val=clReport.checks[key]||'';
+    html+=`<div class="cl-item">
+        <div class="cl-item-name">${item}</div>
+        <div class="cl-btns">
+          <button class="cl-btn good-idle ${val==='good'?'sel-good':''}" onclick="setCheck('${key}','good')"><span class="btn-icon">✓</span><span class="btn-lbl">Good</span></button>
+          <button class="cl-btn caution-idle ${val==='caution'?'sel-caution':''}" onclick="setCheck('${key}','caution')"><span class="btn-icon">!</span><span class="btn-lbl">Caution</span></button>
+          <button class="cl-btn bad-idle ${val==='bad'?'sel-bad':''}" onclick="setCheck('${key}','bad')"><span class="btn-icon">✕</span><span class="btn-lbl">Bad</span></button>
+          <button class="cl-btn na-idle ${val==='na'?'sel-na':''}" onclick="setCheck('${key}','na')"><span class="btn-icon">—</span><span class="btn-lbl">N/A</span></button>
+        </div>
+      </div>`;
+    });
+    html+='</div>';
+  });
+
+  // notes & photos
+  const photos=clReport.photos||[];
+  html+=`<div class="cl-extras">
+    <div class="cl-extras-title">Notes</div>
+    <textarea class="cl-textarea" id="clNotesInput" placeholder="Write any notes about this job..." oninput="clReport.notes=this.value">${clReport.notes||''}</textarea>
+  </div>
+  <div class="cl-extras">
+    <div class="cl-extras-title">Job Photos</div>
+    <div class="cl-photo-upload" id="clPhotoUploadBtn" style="cursor:pointer;">
+      <div style="font-size:28px;margin-bottom:4px;">📷</div>
+      <div style="font-size:13px;font-weight:600;color:var(--muted);">Tap to add photos</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:2px;">Take a photo or choose from library</div>
+    </div>
+    <input type="file" id="clPhotoInput" accept="image/*" multiple style="display:none;">
+    <div class="cl-photos-preview" id="clPhotosPreview">
+      ${photos.map((p,i)=>`<div class="cl-photo-wrap"><img class="cl-photo-img" src="${p}" onclick="openLightboxArr(clReport.photos,${i})"><button class="cl-photo-del" onclick="removeClPhoto(${i})">✕</button></div>`).join('')}
+    </div>
+  </div>
+  <button class="cl-save-btn" onclick="saveReport()">💾 SAVE REPORT</button>
+  <div style="height:20px;"></div>`;
+
+  document.getElementById('clBody').innerHTML=html;
+
+  // Re-attach photo input listener every time checklist renders
+  const clPhotoBtn = document.getElementById('clPhotoUploadBtn');
+  const clPhotoInput = document.getElementById('clPhotoInput');
+  clPhotoBtn.addEventListener('click', () => clPhotoInput.click());
+  clPhotoInput.addEventListener('change', function(){
+    Array.from(this.files).forEach(f=>{
+      compressPhoto(f, compressed => {
+        clReport.photos=clReport.photos||[];
+        clReport.photos.push(compressed);
+        const prev=document.getElementById('clPhotosPreview');
+        const i=clReport.photos.length-1;
+        const wrap=document.createElement('div');
+        wrap.className='cl-photo-wrap';
+        wrap.innerHTML=`<img class="cl-photo-img" src="${compressed}" onclick="openLightboxArr(clReport.photos,${i})"><button class="cl-photo-del" onclick="removeClPhoto(${i})">✕</button>`;
+        prev.appendChild(wrap);
+      });
+    });
+    this.value='';
+  });
+}
+
+function updateClHeader(){
+  document.getElementById('clCustomer').textContent=clReport.customer||'—';
+  document.getElementById('clAddr').textContent=clReport.address||'—';
+  document.getElementById('clTech').textContent=clReport.tech||'—';
+}
+function setCheck(key,val){
+  clReport.checks=clReport.checks||{};
+  clReport.checks[key]=clReport.checks[key]===val?'':val;
+  const good=Object.values(clReport.checks).filter(v=>v==='good').length;
+  const caution=Object.values(clReport.checks).filter(v=>v==='caution').length;
+  const bad=Object.values(clReport.checks).filter(v=>v==='bad').length;
+  document.querySelectorAll('.cl-sum-num.g').forEach(el=>el.textContent=good);
+  document.querySelectorAll('.cl-sum-num.c').forEach(el=>el.textContent=caution);
+  document.querySelectorAll('.cl-sum-num.b').forEach(el=>el.textContent=bad);
+  document.querySelectorAll('.cl-item').forEach(row=>{
+    const name=row.querySelector('.cl-item-name').textContent;
+    const k=name.replace(/\s+/g,'_');
+    if(k!==key)return;
+    const btns=row.querySelectorAll('.cl-btn');
+    const v=clReport.checks[k]||'';
+    btns[0].className='cl-btn good-idle'+(v==='good'?' sel-good':'');
+    btns[1].className='cl-btn caution-idle'+(v==='caution'?' sel-caution':'');
+    btns[2].className='cl-btn bad-idle'+(v==='bad'?' sel-bad':'');
+    btns[3].className='cl-btn na-idle'+(v==='na'?' sel-na':'');
+  });
+}
+function setFuel(val){
+  clReport.fuel=val;
+  document.querySelectorAll('.cl-toggle').forEach(t=>{
+    if(t.textContent==='Gas'||t.textContent==='Electric') t.classList.toggle('sel',t.textContent===val);
+  });
+}
+function setFilter(val){
+  clReport.filter=val;
+  document.querySelectorAll('.cl-toggle').forEach(t=>{
+    if(t.textContent==='Clean'||t.textContent==='Dirty') t.classList.toggle('sel',t.textContent===val);
+  });
+}
+
+// cl photos handled inside renderChecklist()
+function removeClPhoto(i){clReport.photos.splice(i,1);renderChecklist();}
+
+function saveReport(){
+  clReport.notes=document.getElementById('clBody').querySelector('.cl-textarea')?.value||clReport.notes||'';
+  if(currentReportId){
+    const idx=hvacReports.findIndex(r=>r.id===currentReportId);
+    if(idx>=0)hvacReports[idx]=clReport;
+  } else {
+    currentReportId=clReport.id;
+    hvacReports.push(clReport);
+  }
+  try {
+    saveHvac();
+    const btn=document.querySelector('.cl-save-btn');
+    btn.textContent='✅ Saved!';btn.style.background='var(--green)';
+    setTimeout(()=>{btn.textContent='💾 SAVE REPORT';btn.style.background='';},2000);
+  } catch(e) {
+    alert('Storage full — try removing some photos and save again. Photos are large files.');
+  }
+}
+
+// ── SHARE ──
+document.getElementById('clShareBtn').addEventListener('click',()=>{
+  const r=clReport;
+  let txt=`SUPERIOR SERVICES\nHVAC Maintenance Report\n`;
+  txt+=`${'─'.repeat(32)}\n`;
+  txt+=`Date: ${r.date||'—'}   Tech: ${r.tech||'—'}\n`;
+  txt+=`Customer: ${r.customer||'—'}\n`;
+  txt+=`Address: ${r.address||'—'}\n`;
+  if(r.unit) txt+=`Unit #: ${r.unit}\n`;
+  if(r.tonnage) txt+=`Tonnage: ${r.tonnage}\n`;
+  if(r.fuel) txt+=`Fuel: ${r.fuel}\n`;
+  if(r.filter) txt+=`Filter: ${r.filter}\n`;
+  txt+=`${'─'.repeat(32)}\n\nCHECKLIST:\n`;
+  CL_SECTIONS.forEach(sec=>{
+    const checked=sec.items.filter(item=>r.checks&&r.checks[item.replace(/\s+/g,'_')]);
+    if(!checked.length)return;
+    txt+=`\n${sec.title.toUpperCase()}\n`;
+    sec.items.forEach(item=>{
+      const k=item.replace(/\s+/g,'_');
+      const v=r.checks&&r.checks[k];
+      if(!v)return;
+      const icon=v==='good'?'✓ GOOD':v==='caution'?'! CAUTION':v==='na'?'— N/A':'✕ ISSUE';
+      txt+=`  ${icon}: ${item}\n`;
+    });
+  });
+  if(r.notes){txt+=`\n${'─'.repeat(32)}\nNOTES:\n${r.notes}\n`;}
+  txt+=`\n${'─'.repeat(32)}\nSuperior Services · (985) 781-0418`;
+  document.getElementById('shareText').textContent=txt;
+  document.getElementById('shareOverlay').classList.add('open');
+});
+document.getElementById('shareCloseBtn').addEventListener('click',()=>document.getElementById('shareOverlay').classList.remove('open'));
+document.getElementById('shareCopyBtn').addEventListener('click',()=>{
+  const txt=document.getElementById('shareText').textContent;
+  if(navigator.clipboard){navigator.clipboard.writeText(txt).then(()=>{
+    const btn=document.getElementById('shareCopyBtn');btn.textContent='✅ Copied!';
+    setTimeout(()=>btn.textContent='📋 Copy Report',2000);
+  });}else{
+    const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);
+    const btn=document.getElementById('shareCopyBtn');btn.textContent='✅ Copied!';setTimeout(()=>btn.textContent='📋 Copy Report',2000);
+  }
+});
+
+// ── LIGHTBOX ──
+function openLightbox(source,id,index){
+  let photos=[];
+  if(source==='job'){const j=jobs.find(j=>j.id===id);photos=j?j.photos||[]:[]; }
+  openLightboxArr(photos,index);
+}
+function openLightboxArr(photos,index){
+  lightboxPhotos=photos;lightboxIndex=index;
+  document.getElementById('lightboxImg').src=photos[index];
+  document.getElementById('lightboxCounter').textContent=`${index+1} of ${photos.length}`;
+  document.getElementById('lightbox').classList.add('open');
+}
+document.getElementById('lightboxClose').addEventListener('click',()=>document.getElementById('lightbox').classList.remove('open'));
+document.getElementById('lightbox').addEventListener('click',e=>{if(e.target===document.getElementById('lightbox'))document.getElementById('lightbox').classList.remove('open');});
+document.getElementById('lightboxPrev').addEventListener('click',()=>{lightboxIndex=(lightboxIndex-1+lightboxPhotos.length)%lightboxPhotos.length;document.getElementById('lightboxImg').src=lightboxPhotos[lightboxIndex];document.getElementById('lightboxCounter').textContent=`${lightboxIndex+1} of ${lightboxPhotos.length}`;});
+document.getElementById('lightboxNext').addEventListener('click',()=>{lightboxIndex=(lightboxIndex+1)%lightboxPhotos.length;document.getElementById('lightboxImg').src=lightboxPhotos[lightboxIndex];document.getElementById('lightboxCounter').textContent=`${lightboxIndex+1} of ${lightboxPhotos.length}`;});
+
+renderJobs();
+</script>
+</body>
+</html>
